@@ -1,5 +1,6 @@
 const BACKGROUND = "#101010"
 const FOREGROUND = "#50FF50"
+const PIXELSIZE = 5
 
 console.log(game)
 game.width = 800
@@ -14,7 +15,7 @@ function clear(){
 
 function point({x,y}) {
     ctx.fillStyle = FOREGROUND
-    ctx.fillRect(x,y,5,5)
+    ctx.fillRect(x-(PIXELSIZE/2),y-(PIXELSIZE/2),PIXELSIZE,PIXELSIZE)
 
 }
 
@@ -25,7 +26,7 @@ function screen(p){
 
     return {
     x:(p.x + 1)/2*game.width,
-    y:(p.y + 1)/2*game.height
+    y:(1-(p.y + 1)/2)*game.height
     }
 
 }
@@ -33,6 +34,6 @@ function screen(p){
 
 clear()
 
-point(screen({x:0,y:0}))
+point(screen({x:0,y:0.5}))
 
 
