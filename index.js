@@ -1,6 +1,6 @@
 const BACKGROUND = "#101010"
 const FOREGROUND = "#50FF50"
-const PIXELSIZE = 5
+const PIXELSIZE = 15
 
 console.log(game)
 game.width = 800
@@ -32,8 +32,80 @@ function screen(p){
 }
 
 
-clear()
+//(x,y,z)
+//x' = x/z
+//y' = y/z
 
-point(screen({x:0,y:0.5}))
+function project({x,y,z}){
+
+    return{
+
+        x:x/z,
+        y:y/z
+    }
+
+}
+
+const FPS=60
+
+let ofsetz = 1;
+
+let angle = 0
+
+
+const vs = [
+    {x:0.5,y:0.5,z:0.5},
+    {x:-0.5,y:-0.5,z:0.5},
+    {x:0.5,y:-0.5,z:0.5},
+    {x:-0.5,y:0.5,z:0.5},
+
+    {x:0.5,y:0.5,z:-0.5},
+    {x:-0.5,y:-0.5,z:-0.5},
+    {x:0.5,y:-0.5,z:-0.5},
+    {x:-0.5,y:0.5,z:-0.5},
+
+
+
+]
+
+function translate_z({x,y,z},ofsetz){
+    return {x:x,y:y,z:z+ofsetz}
+}
+
+function rotate_xz({x, y, z}, angle) {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    return {
+        x: x * c - z * s,
+        y,
+        z: x * s + z * c,
+
+    };
+
+}
+
+
+function frame(){
+    //console.log(ofsetz)
+    ofsetz+=0.01
+
+    if (ofsetz>10){
+        ofsetz=0.01
+
+    }
+    clear()
+    angle += 1
+
+    for (let i of vs){
+        point(screen(project((translate_z(rotate_xz(i,angle),ofsetz)))))
+    }
+
+    setTimeout(frame,1000/FPS)
+}
+
+setTimeout(frame,1000/FPS)
+
+
+
 
 
