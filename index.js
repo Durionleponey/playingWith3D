@@ -50,6 +50,8 @@ const FPS=60
 
 let ofsetz = 1;
 
+let ofsetx =1;
+
 let angle = 0
 
 const vs = [
@@ -111,6 +113,10 @@ function translate_z({x,y,z},ofsetz){
     return {x:x,y:y,z:z+ofsetz}
 }
 
+function translate_x({x,y,z},ofsetx){
+    return {x:x+ofsetx,y:y,z:z}
+}
+
 function rotate_xz({x, y, z}, angle) {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
@@ -151,6 +157,18 @@ function logKey(e) {
 
     }
 
+    if (e.code === "ArrowRight"){
+
+        ofsetx-=0.01
+    }
+
+    if (e.code === "ArrowLeft"){
+
+        ofsetx+=0.01
+
+
+    }
+
 }
 
 
@@ -166,7 +184,7 @@ function frame(){
     angle += 0.01
 
     for (let i of vs){
-        point(screen(project((translate_z(rotate_xz(i,angle),ofsetz)))))
+        point(screen(project(translate_x(translate_z(rotate_xz(i,angle),ofsetz),ofsetx))))
     }
 
     for (let f of fs){
@@ -176,9 +194,9 @@ function frame(){
             let aa = vs[f[a]]
            let bb = vs[f[(a+1)%f.length]]
 
-            line(screen(project((translate_z(rotate_xz(aa,angle),ofsetz)))),
-                screen(project((translate_z(rotate_xz(bb,angle),ofsetz))))
-            )
+            line(screen(project(translate_x(translate_z(rotate_xz(aa,angle),ofsetz),ofsetx))),
+                screen(project(translate_x(translate_z(rotate_xz(bb,angle),ofsetz),ofsetx))))
+
 
 
         }
